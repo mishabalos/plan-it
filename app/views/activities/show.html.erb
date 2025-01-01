@@ -1,0 +1,20 @@
+<div class="container mx-auto px-4">
+  <h1 class="text-2xl font-bold mb-4"><%= @activity.name %></h1>
+  <div class="bg-white shadow rounded p-6">
+    <p class="text-gray-600 mb-4"><%= @activity.description %></p>
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <p class="font-medium">Start Time</p>
+        <p><%= @activity.start_time.strftime("%I:%M %p") %></p>
+      </div>
+      <div>
+        <p class="font-medium">End Time</p>
+        <p><%= @activity.end_time.strftime("%I:%M %p") %></p>
+      </div>
+    </div>
+    <div class="mt-4">
+      <%= link_to 'Edit', edit_trip_itinerary_activity_path(@trip, @itinerary, @activity), class: 'btn-primary' %>
+      <%= link_to 'Back', trip_itinerary_path(@trip, @itinerary), class: 'btn-secondary ml-2' %>
+    </div>
+  </div>
+</div>

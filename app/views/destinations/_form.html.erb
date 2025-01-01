@@ -1,0 +1,17 @@
+<%= form_with(model: [@trip, @destination], local: true, class: "space-y-4") do |f| %>
+  <div class="field">
+    <%= f.label :name, class: "text-sm font-medium" %>
+    <%= f.text_field :name, class: "flex h-10 w-full rounded-md border" %>
+  </div>
+  <div class="grid grid-cols-2 gap-4">
+    <div class="field">
+      <%= f.label :city, class: "text-sm font-medium" %>
+      <%= f.text_field :city, class: "flex h-10 w-full rounded-md border" %>
+    </div>
+    <div class="field">
+      <%= f.label :country, class: "text-sm font-medium" %>
+      <%= f.text_field :country, class: "flex h-10 w-full rounded-md border" %>
+    </div>
+  </div>
+  <%= f.submit class: "w-full btn-primary" %>
+<% end %>

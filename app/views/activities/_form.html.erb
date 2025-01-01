@@ -1,0 +1,21 @@
+<%= form_with(model: [@trip, @itinerary, @activity], local: true, class: "space-y-4") do |f| %>
+  <div class="field">
+    <%= f.label :name, class: "text-sm font-medium" %>
+    <%= f.text_field :name, class: "flex h-10 w-full rounded-md border" %>
+  </div>
+  <div class="field">
+    <%= f.label :description, class: "text-sm font-medium" %>
+    <%= f.text_area :description, class: "flex h-32 w-full rounded-md border" %>
+  </div>
+  <div class="grid grid-cols-2 gap-4">
+    <div class="field">
+      <%= f.label :start_time, class: "text-sm font-medium" %>
+      <%= f.datetime_field :start_time, class: "flex h-10 w-full rounded-md border" %>
+    </div>
+    <div class="field">
+      <%= f.label :end_time, class: "text-sm font-medium" %>
+      <%= f.datetime_field :end_time, class: "flex h-10 w-full rounded-md border" %>
+    </div>
+  </div>
+  <%= f.submit class: "w-full btn-primary" %>
+<% end %>

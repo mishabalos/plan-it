@@ -1,0 +1,14 @@
+<footer class="bg-white border-t mt-auto">
+  <div class="container mx-auto px-4 py-6">
+    <div class="flex justify-between items-center">
+      <div>
+        <p class="text-sm text-gray-600">&copy; <%= Time.current.year %> PlanIt. All rights reserved.</p>
+      </div>
+      <div class="flex space-x-4">
+        <%= link_to 'About', about_path, class: 'text-sm text-gray-600 hover:text-gray-900' %>
+        <%= link_to 'Privacy', '#', class: 'text-sm text-gray-600 hover:text-gray-900' %>
+        <%= link_to 'Terms', '#', class: 'text-sm text-gray-600 hover:text-gray-900' %>
+      </div>
+    </div>
+  </div>
+</footer>

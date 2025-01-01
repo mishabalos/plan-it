@@ -1,0 +1,9 @@
+<div class="border rounded p-4 mb-2">
+  <h3 class="font-semibold">Day <%= (itinerary.date - itinerary.trip.start_date).to_i + 1 %></h3>
+  <p class="text-sm text-gray-600"><%= itinerary.date.strftime("%B %d, %Y") %></p>
+  <p class="text-sm"><%= pluralize(itinerary.activities.count, 'activity') %></p>
+  <div class="mt-2">
+    <%= link_to 'View', trip_itinerary_path(itinerary.trip, itinerary), class: 'btn-secondary' %>
+    <%= link_to 'Edit', edit_trip_itinerary_path(itinerary.trip, itinerary), class: 'btn-secondary' %>
+  </div>
+</div>

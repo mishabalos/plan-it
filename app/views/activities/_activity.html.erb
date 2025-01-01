@@ -1,0 +1,12 @@
+<div class="border rounded p-4">
+  <div class="flex justify-between">
+    <h3 class="font-semibold"><%= activity.name %></h3>
+    <span class="text-sm text-gray-600">
+      <%= activity.start_time.strftime("%I:%M %p") %> - <%= activity.end_time.strftime("%I:%M %p") %>
+    </span>
+  </div>
+  <p class="text-sm text-gray-600 mt-2"><%= activity.description %></p>
+  <div class="mt-2">
+    <%= link_to 'View', trip_itinerary_activity_path(activity.itinerary.trip, activity.itinerary, activity), class: 'btn-secondary' %>
+  </div>
+</div>
