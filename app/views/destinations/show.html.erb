@@ -1,0 +1,10 @@
+<div class="container mx-auto px-4">
+  <h1 class="text-2xl font-bold mb-4"><%= @destination.name %></h1>
+  <div class="bg-white shadow rounded p-6">
+    <p class="text-lg"><%= @destination.city %>, <%= @destination.country %></p>
+    <div class="mt-4">
+      <%= link_to 'Edit', edit_trip_destination_path(@trip, @destination), class: 'btn-primary' %>
+      <%= link_to 'Back', trip_path(@trip), class: 'btn-secondary ml-2' %>
+    </div>
+  </div>
+</div>

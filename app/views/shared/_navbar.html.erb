@@ -1,0 +1,30 @@
+<nav class="bg-white shadow">
+  <div class="container mx-auto px-4">
+    <div class="flex justify-between h-16">
+      <div class="flex items-center">
+        <%= link_to root_path, class: "flex items-center space-x-2" do %>
+          <span class="text-xl font-bold">PlanIt</span>
+        <% end %>
+        <% if user_signed_in? %>
+          <div class="hidden md:flex items-center space-x-4 ml-10">
+            <%= link_to 'My Trips', trips_path, class: "text-gray-700 hover:text-gray-900" %>
+            <%= link_to 'New Trip', new_trip_path, class: "text-gray-700 hover:text-gray-900" %>
+          </div>
+        <% end %>
+      </div>
+      <div class="flex items-center space-x-4">
+        <% if user_signed_in? %>
+          <div class="flex items-center space-x-4">
+            <span class="text-gray-700"><%= current_user.first_name %></span>
+            <%= button_to destroy_user_session_path, method: :delete, class: "text-gray-700 hover:text-gray-900", form_class: "inline" do %>
+              Sign Out
+            <% end %>
+          </div>
+        <% else %>
+          <%= link_to 'Sign In', new_user_session_path, class: "text-gray-700 hover:text-gray-900" %>
+          <%= link_to 'Sign Up', new_user_registration_path, class: "ml-4 btn-primary" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</nav>
