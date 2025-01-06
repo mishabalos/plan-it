@@ -10,7 +10,7 @@ module TripAccessible
   private
 
   def set_trip
-    @trip = Trip.joins(:trip_collaborators)
+    @trip = Trip.left_joins(:trip_collaborators)
                 .where("trips.user_id = ? OR trip_collaborators.user_id = ?", current_user.id, current_user.id)
                 .find(params[:trip_id])
   end
