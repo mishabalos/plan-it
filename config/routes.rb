@@ -10,6 +10,10 @@ Rails.application.routes.draw do
   authenticate :user do
     get "dashboard", to: "trips#index", as: :user_root
     resources :trips do
+      resources :collaborators, controller: "trip_collaborators"
+      resources :budgets, module: :finance, only: [ :new, :create, :edit, :update ] do
+        resources :expenses, only: [ :index, :new, :create, :edit, :update, :destroy, :show ]
+      end
       resources :destinations
       resources :itineraries do
         resources :activities

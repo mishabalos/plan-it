@@ -1,0 +1,14 @@
+<div class="container mx-auto px-4 max-w-2xl">
+  <h1 class="text-2xl font-bold mb-4">Add Collaborator</h1>
+  <%= form_with(url: trip_collaborators_path(@trip), local: true, class: "space-y-4") do |f| %>
+    <div class="field">
+      <%= f.label :email, class: "text-sm font-medium" %>
+      <%= f.email_field :email, class: "flex h-10 w-full rounded-md border" %>
+    </div>
+    <div class="field">
+      <%= f.label :role, class: "text-sm font-medium" %>
+      <%= f.select :role, TripCollaborator::ROLES, {}, class: "capitalize flex h-10 w-full rounded-md border" %>
+    </div>
+    <%= f.submit 'Add', class: "w-full btn-primary" %>
+  <% end %>
+</div>

@@ -1,9 +1,12 @@
 class TripsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_trip, only: [ :show, :edit, :update, :destroy ]
+  before_action :authorize_view!, only: [ :show ]
+  before_action :authorize_edit!, only: [ :edit, :update, :destroy ]
 
   def index
-    @trips = current_user.trips
+    @trips = current_user.trips + Trip.joins(:trip_collaborators)
+                                    .where(trip_collaborators: { user_id: current_user.id })
   end
 
   def show
@@ -41,7 +44,19 @@ class TripsController < ApplicationController
   private
 
   def set_trip
-    @trip = current_user.trips.find(params[:id])
+    @trip = Trip.find(params[:id])
+  end
+
+  def authorize_view!
+    unless @trip.can_view?(current_user)
+      redirect_to trips_path, alert: "Unauthorized"
+    end
+  end
+
+  def authorize_edit!
+    unless @trip.can_edit?(current_user)
+      redirect_to trips_path, alert: "Unauthorized"
+    end
   end
 
   def trip_params

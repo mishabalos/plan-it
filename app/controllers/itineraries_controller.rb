@@ -1,6 +1,6 @@
 class ItinerariesController < ApplicationController
+  include TripAccessible
   before_action :authenticate_user!
-  before_action :set_trip
   before_action :set_itinerary, only: [ :show, :edit, :update, :destroy ]
 
   def index
@@ -41,10 +41,6 @@ class ItinerariesController < ApplicationController
   end
 
   private
-
-  def set_trip
-    @trip = current_user.trips.find(params[:trip_id])
-  end
 
   def set_itinerary
     @itinerary = @trip.itineraries.find(params[:id])

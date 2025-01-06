@@ -2,8 +2,14 @@
   <h3 class="font-semibold">Day <%= (itinerary.date - itinerary.trip.start_date).to_i + 1 %></h3>
   <p class="text-sm text-gray-600"><%= itinerary.date.strftime("%B %d, %Y") %></p>
   <p class="text-sm"><%= pluralize(itinerary.activities.count, 'activity') %></p>
-  <div class="mt-2">
+  <div class="mt-2 space-x-2">
     <%= link_to 'View', trip_itinerary_path(itinerary.trip, itinerary), class: 'btn-secondary' %>
     <%= link_to 'Edit', edit_trip_itinerary_path(itinerary.trip, itinerary), class: 'btn-secondary' %>
+    <%= button_to 'Delete', 
+        trip_itinerary_path(itinerary.trip, itinerary), 
+        method: :delete,
+        class: 'btn-secondary',
+        form: { class: 'inline-block' },
+        data: { confirm: 'Are you sure? This will delete all activities for this day.' } %>
   </div>
 </div>
