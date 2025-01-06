@@ -1,0 +1,28 @@
+<div class="container mx-auto px-4 max-w-2xl">
+  <h1 class="text-2xl font-bold mb-4">Collaborators</h1>
+  <%= link_to 'Add Collaborator', new_trip_collaborator_path(@trip), class: 'btn-primary mb-4' %>
+  <div class="space-y-4">
+    <% @collaborators.each do |collaborator| %>
+      <div class="flex justify-between items-center p-4 border rounded">
+        <div>
+          <p class="font-medium"><%= collaborator.user.full_name %></p>
+          <p class="text-sm text-gray-600"><%= collaborator.user.email %></p>
+        </div>
+        <div class="flex items-center space-x-2">
+          <%= form_with(url: trip_collaborator_path(@trip, collaborator), method: :patch, class: "inline") do |f| %>
+            <%= f.select :role, 
+               TripCollaborator::ROLES,
+               { selected: collaborator.role },
+               { class: "capitalize rounded border p-1 text-sm",
+                 onchange: 'this.form.submit()' } %>
+          <% end %>
+          <%= button_to 'Remove', 
+             trip_collaborator_path(@trip, collaborator), 
+             method: :delete, 
+             class: 'btn-secondary text-sm',
+             data: { confirm: 'Are you sure?' } %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

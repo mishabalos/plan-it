@@ -1,0 +1,38 @@
+<div class="container mx-auto px-4 max-w-2xl">
+  <div class="bg-white rounded-lg shadow p-6">
+    <div class="flex justify-between items-center mb-4">
+      <h1 class="text-2xl font-bold"><%= @expense.name %></h1>
+      <%= link_to "Edit", edit_trip_budget_expense_path(@trip, @budget, @expense), 
+          class: "text-blue-600 hover:text-blue-800" %>
+    </div>
+    <div class="grid grid-cols-2 gap-4 mb-6">
+      <div>
+        <p class="text-sm text-gray-600">Amount</p>
+        <p class="text-lg font-medium">$<%= @expense.amount %></p>
+      </div>
+      <div>
+        <p class="text-sm text-gray-600">Category</p>
+        <p class="text-lg font-medium"><%= @expense.category %></p>
+      </div>
+      <div>
+        <p class="text-sm text-gray-600">Date</p>
+        <p class="text-lg font-medium"><%= @expense.date.strftime("%B %d, %Y") %></p>
+      </div>
+      <div>
+        <p class="text-sm text-gray-600">Paid by</p>
+        <p class="text-lg font-medium"><%= @expense.user.full_name %></p>
+      </div>
+    </div>
+    <div class="border-t pt-4">
+      <h2 class="text-lg font-semibold mb-2">Split Details</h2>
+      <div class="space-y-2">
+        <% @expense.expense_splits.each do |split| %>
+          <div class="flex justify-between items-center">
+            <span><%= split.user.full_name %></span>
+            <span class="font-medium">$<%= split.amount %></span>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

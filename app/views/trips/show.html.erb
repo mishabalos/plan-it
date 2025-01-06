@@ -1,11 +1,39 @@
 <div class="container mx-auto px-4">
   <div class="mb-6">
-    <h1 class="text-3xl font-bold"><%= @trip.title %></h1>
+    <div class="flex justify-between items-center">
+      <h1 class="text-3xl font-bold"><%= @trip.title %></h1>
+      <div class="space-x-2">
+        <%= link_to 'Manage Collaborators', trip_collaborators_path(@trip), class: 'btn-secondary' %>
+        <% if @trip.budget %>
+          <%= link_to 'View Budget', trip_budget_expenses_path(@trip, @trip.budget), class: 'btn-secondary' %>
+        <% else %>
+          <%= link_to 'Set Budget', new_trip_budget_path(@trip), class: 'btn-secondary' %>
+        <% end %>
+      </div>
+    </div>
     <p class="text-gray-600"><%= @trip.description %></p>
     <div class="mt-2">
-      <span class="text-sm">From: <%= @trip.start_date.strftime("%B %d, %Y") %></span>
-      <span class="text-sm ml-4">To: <%= @trip.end_date.strftime("%B %d, %Y") %></span>
+      <span class="text-sm">From: <%= @trip.start_date.strftime("%d %b %Y") %></span>
+      <span class="text-sm ml-4">To: <%= @trip.end_date.strftime("%d %b %Y") %></span>
     </div>
+    <% if @trip.budget %>
+      <div class="mt-4 p-4 bg-white rounded shadow">
+        <div class="grid grid-cols-3 gap-4">
+          <div>
+            <p class="text-sm text-gray-600">Total Budget</p>
+            <p class="text-lg font-medium">$<%= @trip.budget.amount %></p>
+          </div>
+          <div>
+            <p class="text-sm text-gray-600">Spent</p>
+            <p class="text-lg font-medium">$<%= @trip.budget.expenses.sum(:amount) %></p>
+          </div>
+          <div>
+            <p class="text-sm text-gray-600">Remaining</p>
+            <p class="text-lg font-medium">$<%= @trip.budget.remaining_amount %></p>
+          </div>
+        </div>
+      </div>
+    <% end %>
   </div>
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
     <div>

@@ -1,0 +1,32 @@
+<div class="container mx-auto px-4 max-w-2xl">
+  <h1 class="text-2xl font-bold mb-4">Add Expense</h1>
+  <%= form_with(model: [@trip, @budget, @expense], 
+                url: trip_budget_expenses_path(@trip, @budget), 
+                scope: :expense,
+                local: true, 
+                class: "space-y-4") do |f| %>
+    <div class="field">
+      <%= f.label :name, class: "text-sm font-medium" %>
+      <%= f.text_field :name, class: "flex h-10 w-full rounded-md border" %>
+    </div>
+    <div class="field">
+      <%= f.label :amount, class: "text-sm font-medium" %>
+      <%= f.number_field :amount, step: '0.01', class: "flex h-10 w-full rounded-md border" %>
+    </div>
+    <div class="field">
+      <%= f.label :category, class: "text-sm font-medium" %>
+      <%= f.select :category, ['Food', 'Transportation', 'Accommodation', 'Activities', 'Others'], {}, class: "flex h-10 w-full rounded-md border" %>
+    </div>
+    <div class="field">
+      <%= f.label :date, class: "text-sm font-medium" %>
+      <%= f.date_field :date, class: "flex h-10 w-full rounded-md border" %>
+    </div>
+    <div class="field">
+      <label class="text-sm font-medium">Split with</label>
+      <%= select_tag 'split_with[]', 
+         options_from_collection_for_select(@trip.collaborators, 'id', 'full_name'),
+         { multiple: true, class: "flex h-32 w-full rounded-md border" } %>
+    </div>
+    <%= f.submit class: "w-full btn-primary" %>
+  <% end %>
+</div>
