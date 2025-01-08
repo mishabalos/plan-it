@@ -10,6 +10,8 @@ class Trip < ApplicationRecord
   validates :start_date, presence: true
   validates :end_date, presence: true
   validate :end_date_after_start_date
+  validates :latitude, numericality: true, allow_nil: true
+  validates :longitude, numericality: true, allow_nil: true
 
   def owner?(user)
     self.user == user

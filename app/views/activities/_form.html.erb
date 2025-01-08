@@ -17,5 +17,13 @@
       <%= f.datetime_field :end_time, class: "flex h-10 w-full rounded-md border" %>
     </div>
   </div>
+  <div class="field">
+    <%= f.label :location_name, "Location", class: "text-sm font-medium" %>
+    <%= f.text_field :location_name, class: "flex h-10 w-full rounded-md border",
+                     data: { controller: "places" } %>
+    <%= f.hidden_field :latitude %>
+    <%= f.hidden_field :longitude %>
+    <%= f.hidden_field :formatted_address %>
+  </div>
   <%= f.submit class: "w-full btn-primary" %>
 <% end %>

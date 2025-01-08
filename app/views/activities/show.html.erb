@@ -12,6 +12,36 @@
         <p><%= @activity.end_time.strftime("%I:%M %p") %></p>
       </div>
     </div>
+    <% if @activity.location_name.present? %>
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <p class="font-medium">Location</p>
+          <p><%= @activity.location_name %></p>
+        </div>
+        <div>
+          <p class="font-medium">Address</p>
+          <p><%= @activity.formatted_address %></p>
+        </div>
+      </div>
+      <% if @activity.latitude && @activity.longitude %>
+        <div class="mt-4">
+          <div id="map" class="w-full h-64 rounded-lg"></div>
+        </div>
+        <%= javascript_tag do %>
+          document.addEventListener('DOMContentLoaded', function() {
+          const map = new google.maps.Map(document.getElementById('map'), {
+          center: { lat: <%= @activity.latitude %>, lng: <%= @activity.longitude %> },
+          zoom: 15
+          });
+          new google.maps.Marker({
+          position: { lat: <%= @activity.latitude %>, lng: <%= @activity.longitude %> },
+          map: map,
+          title: '<%= @activity.name %>'
+          });
+          });
+        <% end %>
+      <% end %>
+    <% end %>
     <div class="mt-4">
       <%= link_to 'Edit', edit_trip_itinerary_activity_path(@trip, @itinerary, @activity), class: 'btn-primary' %>
       <%= link_to 'Back', trip_itinerary_path(@trip, @itinerary), class: 'btn-secondary ml-2' %>
