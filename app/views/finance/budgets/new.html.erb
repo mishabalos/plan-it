@@ -1,10 +1,80 @@
-<div class="container mx-auto px-4 max-w-2xl">
-  <h1 class="text-2xl font-bold mb-4">Set Budget</h1>
-  <%= form_with(model: @budget, url: trip_budgets_path(@trip), local: true, class: "space-y-4") do |f| %>
-    <div class="field">
-      <%= f.label :amount, class: "text-sm font-medium" %>
-      <%= f.number_field :amount, step: '0.01', class: "flex h-10 w-full rounded-md border", name: "budget[amount]" %>
+<div class="container mx-auto px-4 py-8 max-w-2xl">
+  <div class="bg-white rounded-xl shadow-md p-8">
+    <!-- Header Section -->
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-[#264653] mb-2">Set Budget</h1>
+      <p class="text-gray-600">Set your spending limit for "<%= @trip.title %>"</p>
     </div>
-    <%= f.submit "Set Budget", class: "w-full btn-primary" %>
-  <% end %>
-</div>
+
+    <!-- Breadcrumb -->
+    <div class="flex items-center space-x-2 text-sm mb-8 text-gray-600">
+      <%= link_to 'My Trips', trips_path, class: 'hover:text-[#006D77]' %>
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+      </svg>
+      <%= link_to @trip.title, trip_path(@trip), class: 'hover:text-[#006D77]' %>
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+      </svg>
+      <span class="text-[#006D77] font-medium">Set Budget</span>
+    </div>
+
+    <!-- Form Section -->
+    <%= form_with(model: @budget, url: trip_budgets_path(@trip), local: true, class: "space-y-6") do |f| %>
+      <div class="bg-[#83C5BE]/5 p-6 rounded-lg">
+        <!-- Amount Field -->
+        <div class="mb-6">
+          <%= f.label :amount, "Budget Amount", class: "block text-sm font-medium text-[#264653] mb-2" %>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <span class="text-gray-500">$</span>
+            </div>
+            <%= f.number_field :amount, 
+                step: '0.01', 
+                class: "w-full pl-8 pr-4 py-2 rounded-lg border border-gray-300 focus:border-[#006D77] focus:ring focus:ring-[#006D77]/20 focus:outline-none transition-colors duration-200",
+                placeholder: "Enter amount",
+                name: "budget[amount]" %>
+          </div>
+          <p class="mt-2 text-sm text-gray-500">Set a realistic budget to help track your expenses</p>
+        </div>
+
+        <!-- Budget Categories Preview -->
+        <div class="bg-white rounded-lg p-4 border border-gray-200">
+          <h3 class="text-sm font-medium text-[#264653] mb-3">Suggested Budget Breakdown</h3>
+          <div class="space-y-2">
+            <div class="flex justify-between text-sm">
+              <span class="text-gray-600">🏨 Accommodation</span>
+              <span class="text-gray-600">40%</span>
+            </div>
+            <div class="flex justify-between text-sm">
+              <span class="text-gray-600">✈️ Transportation</span>
+              <span class="text-gray-600">30%</span>
+            </div>
+            <div class="flex justify-between text-sm">
+              <span class="text-gray-600">🍽️ Food & Dining</span>
+              <span class="text-gray-600">20%</span>
+            </div>
+            <div class="flex justify-between text-sm">
+              <span class="text-gray-600">🎯 Activities</span>
+              <span class="text-gray-600">10%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center justify-end space-x-4">
+        <%= link_to 'Cancel', trip_path(@trip), 
+            class: "px-6 py-2 border-2 border-[#006D77] text-[#006D77] rounded-lg hover:bg-[#006D77] hover:text-white transition-colors duration-200" %>
+        <%= f.submit "Set Budget", 
+            class: "px-6 py-2 bg-[#006D77] text-white rounded-lg hover:bg-[#264653] transition-colors duration-200 cursor-pointer" %>
+      </div>
+    <% end %>
+
+    <!-- Tips Section -->
+    <div class="mt-8 bg-[#E29578]/10 rounded-lg p-4">
+      <h3 class="text-sm font-medium text-[#264653] mb-2">Budgeting Tips:</h3>
+      <ul class="text-sm text-gray-600 space-y-2">
+        <li class="flex items-center space-x-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-[#E29578]" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 18

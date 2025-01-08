@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html class="h-full">
   <head>
     <title><%= content_for(:title) || "Planit" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -7,20 +7,28 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= yield :head %>
-    <%# <link rel="manifest" href="/manifest.json"> %>
-    <%# <link rel="icon" href="/icon.png" type="image/png"> %>
-    <%# <link rel="icon" href="/icon.svg" type="image/svg+xml"> %>
-    <%# <link rel="apple-touch-icon" href="/icon.png"> %>
     <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+    <style>
+      :root {
+        --color-primary: #006D77;
+        --color-secondary: #E29578;
+        --color-accent: #83C5BE;
+        --color-neutral: #FFDDD2;
+        --color-dark: #264653;
+      }
+    </style>
   </head>
-  <body class="min-h-screen bg-gray-50">
-    <%= render 'shared/navbar' %>
-    <%= render 'shared/flash' %>
-    <main class="<%= content_for?(:main_class) ? yield(:main_class) : 'container mx-auto mt-28 px-5' %>">
-      <%= yield %>
-    </main>
-    <%= render 'shared/footer' %>
+  <body class="h-full min-h-screen">
+    <div class="flex min-h-screen flex-col bg-gradient-to-br from-[#83C5BE] to-[#FFDDD2] antialiased">
+      <%= render 'shared/navbar' %>
+      <div class="relative">
+        <%= render 'shared/flash' %>
+      </div>
+      <main class="flex-grow <%= content_for?(:main_class) ? yield(:main_class) : 'container mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6' %>">
+        <%= yield %>
+      </main>
+      <%= render 'shared/footer' %>
+    </div>
   </body>
-</html>

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 50">
+  <!-- Text -->
+  <text x="0" y="35" font-family="Arial" font-size="35" letter-spacing="2" fill="#006D77">
+    PLAN-IT
+  </text>
+  
+  <!-- Line and airplane -->
+  <g>
+    <!-- Straight line -->
+    <line x1="120" y1="30" x2="160" y2="30" 
+          stroke="#E29578" 
+          stroke-width="2"
+          stroke-linecap="round"/>
+    
+    <!-- Simple airplane -->
+    <path d="M160 30 l10 -5 l-5 5 l5 5 l-10 -5" 
+          fill="#E29578"
+          stroke="#E29578"
+          stroke-width="1"/>
+  </g>
+</svg>
