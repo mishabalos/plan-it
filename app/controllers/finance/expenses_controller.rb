@@ -1,5 +1,6 @@
 class Finance::ExpensesController < ApplicationController
   include FinanceTripAccessible
+  include Finance::ExpensesHelper
   before_action :set_budget
   before_action :set_expense, only: [ :show, :edit, :update, :destroy ]
 

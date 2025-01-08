@@ -1,32 +1,115 @@
-<div class="container mx-auto px-4 max-w-2xl">
-  <h1 class="text-2xl font-bold mb-4">Add Expense</h1>
-  <%= form_with(model: [@trip, @budget, @expense], 
-                url: trip_budget_expenses_path(@trip, @budget), 
-                scope: :expense,
-                local: true, 
-                class: "space-y-4") do |f| %>
-    <div class="field">
-      <%= f.label :name, class: "text-sm font-medium" %>
-      <%= f.text_field :name, class: "flex h-10 w-full rounded-md border" %>
+<div class="container mx-auto px-4 py-8 max-w-2xl">
+  <div class="bg-white rounded-xl shadow-md p-8">
+    <!-- Header Section -->
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-[#264653] mb-2">Add Expense</h1>
+      <p class="text-gray-600">Track a new expense for "<%= @trip.title %>"</p>
     </div>
-    <div class="field">
-      <%= f.label :amount, class: "text-sm font-medium" %>
-      <%= f.number_field :amount, step: '0.01', class: "flex h-10 w-full rounded-md border" %>
+    <!-- Breadcrumb -->
+    <div class="flex items-center space-x-2 text-sm mb-8 text-gray-600">
+      <%= link_to 'My Trips', trips_path, class: 'hover:text-[#006D77]' %>
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+      </svg>
+      <%= link_to @trip.title, trip_path(@trip), class: 'hover:text-[#006D77]' %>
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+      </svg>
+      <span class="text-[#006D77] font-medium">Add Expense</span>
     </div>
-    <div class="field">
-      <%= f.label :category, class: "text-sm font-medium" %>
-      <%= f.select :category, ['Food', 'Transportation', 'Accommodation', 'Activities', 'Others'], {}, class: "flex h-10 w-full rounded-md border" %>
+    <!-- Form Section -->
+    <%= form_with(model: [@trip, @budget, @expense], 
+                  url: trip_budget_expenses_path(@trip, @budget), 
+                  scope: :expense,
+                  local: true, 
+                  class: "space-y-6") do |f| %>
+      <div class="bg-[#83C5BE]/5 p-6 rounded-lg space-y-6">
+        <!-- Name Field -->
+        <div>
+          <%= f.label :name, class: "block text-sm font-medium text-[#264653] mb-2" %>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4zm3 1h6v4H7V5zm8 8v2h1v-2h-1zm-2-6H7v2h6V7zm0 4H7v2h6v-2z" clip-rule="evenodd"/>
+              </svg>
+            </div>
+            <%= f.text_field :name, 
+                class: "w-full pl-10 px-4 py-2 rounded-lg border border-gray-300 focus:border-[#006D77] focus:ring focus:ring-[#006D77]/20 focus:outline-none transition-colors duration-200",
+                placeholder: "Enter expense name" %>
+          </div>
+        </div>
+        <!-- Amount Field -->
+        <div>
+          <%= f.label :amount, class: "block text-sm font-medium text-[#264653] mb-2" %>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <span class="text-gray-500">$</span>
+            </div>
+            <%= f.number_field :amount, 
+                step: '0.01', 
+                class: "w-full pl-8 px-4 py-2 rounded-lg border border-gray-300 focus:border-[#006D77] focus:ring focus:ring-[#006D77]/20 focus:outline-none transition-colors duration-200",
+                placeholder: "0.00" %>
+          </div>
+        </div>
+        <!-- Category Field -->
+        <div>
+          <%= f.label :category, class: "block text-sm font-medium text-[#264653] mb-2" %>
+          <div class="relative">
+            <%= f.select :category, 
+                ['Food', 'Transportation', 'Accommodation', 'Activities', 'Others'], 
+                {}, 
+                class: "w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-[#006D77] focus:ring focus:ring-[#006D77]/20 focus:outline-none transition-colors duration-200 appearance-none" %>
+            <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+        <!-- Date Field -->
+        <div>
+          <%= f.label :date, class: "block text-sm font-medium text-[#264653] mb-2" %>
+          <%= f.date_field :date, 
+              class: "w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-[#006D77] focus:ring focus:ring-[#006D77]/20 focus:outline-none transition-colors duration-200" %>
+        </div>
+        <!-- Split With Field -->
+        <div>
+          <label class="block text-sm font-medium text-[#264653] mb-2">Split with</label>
+          <div class="relative">
+            <%= select_tag 'split_with[]', 
+                options_from_collection_for_select(@trip.collaborators, 'id', 'full_name'),
+                { multiple: true, 
+                  class: "w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-[#006D77] focus:ring focus:ring-[#006D77]/20 focus:outline-none transition-colors duration-200",
+                  size: 4 } %>
+          </div>
+          <p class="mt-2 text-sm text-gray-500">Hold Ctrl/Cmd to select multiple people</p>
+        </div>
+      </div>
+      <!-- Action Buttons -->
+      <div class="flex items-center justify-end space-x-4">
+        <%= link_to 'Cancel', trip_budget_expenses_path(@trip, @budget), 
+            class: "px-6 py-2 border-2 border-[#006D77] text-[#006D77] rounded-lg hover:bg-[#006D77] hover:text-white transition-colors duration-200" %>
+        <%= f.submit "Create Expense", 
+            class: "px-6 py-2 bg-[#006D77] text-white rounded-lg hover:bg-[#264653] transition-colors duration-200 cursor-pointer" %>
+      </div>
+    <% end %>
+    <!-- Tips Section -->
+    <div class="mt-8 bg-[#E29578]/10 rounded-lg p-4">
+      <h3 class="text-sm font-medium text-[#264653] mb-2">Quick Tips:</h3>
+      <ul class="text-sm text-gray-600 space-y-2">
+        <li class="flex items-center space-x-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-[#E29578]" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+          </svg>
+          <span>Choose a clear name for easier tracking</span>
+        </li>
+        <li class="flex items-center space-x-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-[#E29578]" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+          </svg>
+          <span>Select all collaborators to split evenly</span>
+        </li>
+      </ul>
     </div>
-    <div class="field">
-      <%= f.label :date, class: "text-sm font-medium" %>
-      <%= f.date_field :date, class: "flex h-10 w-full rounded-md border" %>
-    </div>
-    <div class="field">
-      <label class="text-sm font-medium">Split with</label>
-      <%= select_tag 'split_with[]', 
-         options_from_collection_for_select(@trip.collaborators, 'id', 'full_name'),
-         { multiple: true, class: "flex h-32 w-full rounded-md border" } %>
-    </div>
-    <%= f.submit class: "w-full btn-primary" %>
-  <% end %>
+  </div>
 </div>

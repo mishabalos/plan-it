@@ -1,27 +1,129 @@
-<div class="container mx-auto px-4">
-  <div class="flex justify-between items-center mb-4">
-    <h1 class="text-2xl font-bold">My Trips</h1>
-    <%= link_to 'New Trip', new_trip_path, class: 'btn-primary' %>
+<div class="container mx-auto px-4 py-8">
+  <!-- Hero Section -->
+  <div class="text-center mb-12">
+    <h1 class="text-4xl font-bold text-[#264653] mb-4">Discover your next adventure</h1>
+    <p class="text-xl text-gray-600 mb-8">Plan and organize your dream trips with ease</p>
+    <!-- Search Bar -->
+    <div class="max-w-2xl mx-auto">
+      <div class="relative flex items-center bg-white rounded-lg shadow-lg p-2">
+        <input type="text" 
+               placeholder="Where to?" 
+               class="w-full px-4 py-2 rounded-lg text-gray-700 focus:outline-none">
+        <%= link_to 'Search', '#', 
+            class: 'px-6 py-2 bg-[#006D77] text-white rounded-lg hover:bg-[#264653] transition-colors duration-200' %>
+      </div>
+    </div>
   </div>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-    <% @trips.each do |trip| %>
-      <div class="border rounded p-4 shadow">
-        <div class="flex justify-between items-start mb-2">
-          <h2 class="text-xl font-semibold"><%= trip.title %></h2>
-          <% if trip.owner?(current_user) %>
-            <span class="px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded">Owner</span>
-          <% else %>
-            <span class="px-2 py-1 text-xs bg-gray-100 text-gray-800 rounded">Shared</span>
-          <% end %>
-        </div>
-        <p class="text-gray-600"><%= trip.description %></p>
-        <div class="mt-2 space-x-2">
-          <%= link_to 'View', trip_path(trip), class: 'btn-secondary' %>
-          <% if trip.can_edit?(current_user) %>
-            <%= link_to 'Edit', edit_trip_path(trip), class: 'btn-secondary' %>
-          <% end %>
+  <!-- Category Cards -->
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+    <% categories = [
+      { title: 'Hotels', count: '1,000+ stays', icon: '🏨' },
+      { title: 'Flights', count: '500+ routes', icon: '✈️' },
+      { title: 'Activities', count: '2,000+ activities', icon: '🎯' },
+      { title: 'Restaurants', count: '3,000+ places', icon: '🍽️' }
+    ] %>
+    <% categories.each do |category| %>
+      <div class="bg-white rounded-xl p-4 shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer group">
+        <div class="flex items-center space-x-3">
+          <span class="text-2xl"><%= category[:icon] %></span>
+          <div>
+            <h3 class="font-semibold text-[#264653] group-hover:text-[#006D77] transition-colors duration-200">
+              <%= category[:title] %>
+            </h3>
+            <p class="text-sm text-gray-500"><%= category[:count] %></p>
+          </div>
         </div>
       </div>
     <% end %>
+  </div>
+  <!-- My Trips Section -->
+  <div class="mb-12">
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-2xl font-bold text-[#264653]">My Trips</h2>
+      <!-- Trip Actions -->
+      <div class="flex space-x-2">
+        <%= link_to new_trip_path, 
+          class: 'px-4 py-2 rounded-lg bg-[#006D77] text-white hover:bg-[#264653] transition-colors duration-200 flex items-center space-x-2' do %>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
+          </svg>
+          <span>New Trip</span>
+        <% end %>
+      </div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <% if @trips.any? %>
+        <% @trips.each do |trip| %>
+          <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300">
+            <!-- Trip Status Badge -->
+            <div class="px-4 py-2 bg-[#83C5BE]/10">
+              <div class="flex justify-between items-center">
+                <span class="text-sm font-medium text-[#006D77]">
+                  <%= trip.start_date.strftime("%b %d") %> - <%= trip.end_date.strftime("%b %d, %Y") %>
+                </span>
+                <% if trip.owner?(current_user) %>
+                  <span class="px-2 py-1 text-xs bg-[#006D77]/10 text-[#006D77] rounded-full">Owner</span>
+                <% else %>
+                  <span class="px-2 py-1 text-xs bg-[#E29578]/10 text-[#E29578] rounded-full">Shared</span>
+                <% end %>
+              </div>
+            </div>
+            <!-- Trip Content -->
+            <div class="p-4">
+              <h3 class="font-semibold text-lg text-[#264653] mb-2"><%= trip.title %></h3>
+              <p class="text-gray-600 text-sm mb-4 line-clamp-2"><%= trip.description %></p>
+              <!-- Trip Stats -->
+              <div class="grid grid-cols-2 gap-4 mb-4 text-sm">
+                <div class="flex items-center space-x-1 text-gray-600">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z"/>
+                  </svg>
+                  <span><%= pluralize(trip.destinations.count, 'destination') %></span>
+                </div>
+                <div class="flex items-center space-x-1 text-gray-600">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/>
+                  </svg>
+                  <span><%= pluralize(trip.collaborators.count, 'collaborator') %></span>
+                </div>
+              </div>
+              <!-- Action Buttons -->
+              <div class="flex justify-between items-center">
+                <%= link_to 'View Details', trip_path(trip), 
+                  class: 'text-[#006D77] hover:text-[#264653] font-medium transition-colors duration-200' %>
+                <div class="flex space-x-2">
+                  <% if trip.can_edit?(current_user) %>
+                    <%= link_to edit_trip_path(trip), 
+                      class: 'p-2 rounded-lg hover:bg-gray-100 text-gray-600 transition-colors duration-200' do %>
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/>
+                      </svg>
+                    <% end %>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      <% else %>
+        <!-- Empty State -->
+        <div class="col-span-3 text-center py-12 bg-white rounded-xl shadow-md">
+          <div class="text-[#006D77] mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-[#264653] mb-2">No trips planned yet</h3>
+          <p class="text-gray-600 mb-6">Start planning your next adventure today!</p>
+          <%= link_to new_trip_path, 
+            class: 'inline-flex items-center space-x-2 px-4 py-2 bg-[#006D77] text-white rounded-lg hover:bg-[#264653] transition-colors duration-200' do %>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
+            </svg>
+            <span>Create Your First Trip</span>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
   </div>
 </div>

@@ -61,3 +61,5 @@ gem "tailwindcss-rails", "~> 3.1"
 gem "devise", "~> 4.9"
 
 gem "rails_live_reload", "~> 0.4.0"
+
+gem "inline_svg"

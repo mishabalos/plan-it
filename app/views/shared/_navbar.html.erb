@@ -3,7 +3,7 @@
     <div class="flex justify-between h-16">
       <div class="flex items-center">
         <%= link_to root_path, class: "flex items-center space-x-2" do %>
-          <span class="text-xl font-bold">PlanIt</span>
+          <span class="text-xl font-bold text-[#006D77]">PLAN-IT</span>
         <% end %>
         <% if user_signed_in? %>
           <div class="hidden md:flex items-center space-x-4 ml-10">
@@ -21,8 +21,14 @@
             <% end %>
           </div>
         <% else %>
-          <%= link_to 'Sign In', new_user_session_path, class: "text-gray-700 hover:text-gray-900" %>
-          <%= link_to 'Sign Up', new_user_registration_path, class: "ml-4 btn-primary" %>
+          <%= link_to new_user_session_path, 
+      class: "px-4 py-2 rounded-lg border-2 border-[#006D77] text-[#006D77] hover:bg-[#006D77] hover:text-white transition-all duration-200" do %>
+            Sign In
+          <% end %>
+          <%= link_to new_user_registration_path, 
+      class: "ml-4 px-4 py-2 rounded-lg bg-[#006D77] text-white hover:bg-[#264653] hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 shadow-md" do %>
+            Sign Up
+          <% end %>
         <% end %>
       </div>
     </div>

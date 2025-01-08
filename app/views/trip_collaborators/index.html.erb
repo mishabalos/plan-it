@@ -1,28 +1,88 @@
-<div class="container mx-auto px-4 max-w-2xl">
-  <h1 class="text-2xl font-bold mb-4">Collaborators</h1>
-  <%= link_to 'Add Collaborator', new_trip_collaborator_path(@trip), class: 'btn-primary mb-4' %>
-  <div class="space-y-4">
-    <% @collaborators.each do |collaborator| %>
-      <div class="flex justify-between items-center p-4 border rounded">
-        <div>
-          <p class="font-medium"><%= collaborator.user.full_name %></p>
-          <p class="text-sm text-gray-600"><%= collaborator.user.email %></p>
-        </div>
-        <div class="flex items-center space-x-2">
-          <%= form_with(url: trip_collaborator_path(@trip, collaborator), method: :patch, class: "inline") do |f| %>
-            <%= f.select :role, 
-               TripCollaborator::ROLES,
-               { selected: collaborator.role },
-               { class: "capitalize rounded border p-1 text-sm",
-                 onchange: 'this.form.submit()' } %>
-          <% end %>
-          <%= button_to 'Remove', 
-             trip_collaborator_path(@trip, collaborator), 
-             method: :delete, 
-             class: 'btn-secondary text-sm',
-             data: { confirm: 'Are you sure?' } %>
-        </div>
+<div class="container mx-auto px-4 py-8 max-w-2xl">
+  <div class="bg-white rounded-xl shadow-md p-8">
+    <!-- Header Section -->
+    <div class="flex justify-between items-center mb-8">
+      <div>
+        <h1 class="text-3xl font-bold text-[#264653] mb-2">Collaborators</h1>
+        <p class="text-gray-600">Manage people collaborating on "<%= @trip.title %>"</p>
       </div>
-    <% end %>
+      <%= link_to new_trip_collaborator_path(@trip), 
+          class: "px-4 py-2 bg-[#006D77] text-white rounded-lg hover:bg-[#264653] transition-colors duration-200 flex items-center space-x-2" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+          <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z"/>
+        </svg>
+        <span>Add Collaborator</span>
+      <% end %>
+    </div>
+    <!-- Collaborators List -->
+    <div class="space-y-4">
+      <% if @collaborators.any? %>
+        <% @collaborators.each do |collaborator| %>
+          <div class="bg-[#83C5BE]/5 rounded-lg p-4 hover:shadow-md transition-shadow duration-200">
+            <div class="flex justify-between items-center">
+              <!-- User Info -->
+              <div class="flex items-center space-x-4">
+                <div class="bg-[#006D77] rounded-full p-3">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
+                  </svg>
+                </div>
+                <div>
+                  <p class="font-medium text-[#264653]"><%= collaborator.user.full_name %></p>
+                  <p class="text-sm text-gray-600"><%= collaborator.user.email %></p>
+                </div>
+              </div>
+              <!-- Actions -->
+              <div class="flex items-center space-x-3">
+                <%= form_with(url: trip_collaborator_path(@trip, collaborator), 
+                            method: :patch, 
+                            class: "inline") do |f| %>
+                  <div class="relative">
+                    <%= f.select :role, 
+                        TripCollaborator::ROLES,
+                        { selected: collaborator.role },
+                        { class: "capitalize pr-8 pl-3 py-2 rounded-lg border border-gray-300 text-sm focus:border-[#006D77] focus:ring focus:ring-[#006D77]/20 focus:outline-none appearance-none",
+                          onchange: 'this.form.submit()' } %>
+                    <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                      </svg>
+                    </div>
+                  </div>
+                <% end %>
+                <%= button_to trip_collaborator_path(@trip, collaborator), 
+                    method: :delete,
+                    class: "p-2 text-gray-400 hover:text-red-500 transition-colors duration-200",
+                    data: { 
+                      confirm: "Are you sure you want to remove #{collaborator.user.full_name} from this trip?" 
+                    } do %>
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                  </svg>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      <% else %>
+        <!-- Empty State -->
+        <div class="text-center py-12">
+          <div class="text-[#006D77] mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-[#264653] mb-2">No collaborators yet</h3>
+          <p class="text-gray-600 mb-6">Start adding people to collaborate on this trip!</p>
+          <%= link_to new_trip_collaborator_path(@trip), 
+              class: "inline-flex items-center space-x-2 px-4 py-2 bg-[#006D77] text-white rounded-lg hover:bg-[#264653] transition-colors duration-200" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z"/>
+            </svg>
+            <span>Add Your First Collaborator</span>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
   </div>
 </div>

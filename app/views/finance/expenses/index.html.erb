@@ -1,18 +1,107 @@
-<div class="container mx-auto px-4">
-  <div class="flex justify-between items-center mb-4">
-    <h1 class="text-2xl font-bold">Expenses</h1>
-    <%= link_to 'Add Expense', new_trip_budget_expense_path(@trip), class: 'btn-primary' %>
-  </div>
-  <div class="space-y-4">
-    <% @expenses.each do |expense| %>
-      <div class="border rounded p-4 shadow">
-        <div class="flex justify-between">
-          <h3 class="font-semibold"><%= link_to trip_budget_expense_path(@trip, @budget, expense) do %><%= expense.name %><% end %></h3>
-          <span class="text-lg">$<%= expense.amount %></span>
-        </div>
-        <p class="text-sm text-gray-600">Paid by: <%= expense.user.full_name %></p>
-        <p class="text-sm text-gray-600">Category: <%= expense.category %></p>
+<div class="container mx-auto px-4 py-8 max-w-5xl">
+  <div class="bg-white rounded-xl shadow-md p-8">
+    <!-- Header Section -->
+    <div class="flex justify-between items-center mb-8">
+      <div>
+        <h1 class="text-3xl font-bold text-[#264653] mb-2">Expenses</h1>
+        <p class="text-gray-600">Track your spending for "<%= @trip.title %>"</p>
       </div>
-    <% end %>
+      <%= link_to new_trip_budget_expense_path(@trip), 
+          class: "px-4 py-2 bg-[#006D77] text-white rounded-lg hover:bg-[#264653] transition-colors duration-200 flex items-center space-x-2" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
+        </svg>
+        <span>Add Expense</span>
+      <% end %>
+    </div>
+    <!-- Budget Summary -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div class="bg-[#83C5BE]/10 rounded-lg p-4">
+        <p class="text-sm text-[#264653] font-medium mb-1">Total Budget</p>
+        <p class="text-2xl font-bold text-[#006D77]">$<%= @budget.amount %></p>
+      </div>
+      <div class="bg-[#E29578]/10 rounded-lg p-4">
+        <p class="text-sm text-[#264653] font-medium mb-1">Total Spent</p>
+        <p class="text-2xl font-bold text-[#E29578]">$<%= @expenses.sum(&:amount) %></p>
+      </div>
+      <div class="bg-[#83C5BE]/10 rounded-lg p-4">
+        <p class="text-sm text-[#264653] font-medium mb-1">Remaining</p>
+        <p class="text-2xl font-bold text-[#006D77]">$<%= @budget.remaining_amount %></p>
+      </div>
+    </div>
+    <!-- Expenses List -->
+    <div class="space-y-4">
+      <% if @expenses.any? %>
+        <div class="bg-[#83C5BE]/5 rounded-lg p-4">
+          <% @expenses.each do |expense| %>
+            <div class="bg-white rounded-lg p-4 mb-4 hover:shadow-md transition-shadow duration-200">
+              <div class="flex justify-between items-start">
+                <div class="flex items-start space-x-4">
+                  <!-- Category Icon -->
+                  <div class="bg-teal-600/10 rounded-full p-2">
+                    <%= category_icon(expense.category) %>
+                  </div>
+                  <!-- Expense Details -->
+                  <div>
+                    <h3 class="font-semibold text-[#264653]">
+                      <%= link_to expense.name, trip_budget_expense_path(@trip, @budget, expense), 
+                          class: "hover:text-[#006D77] transition-colors duration-200" %>
+                    </h3>
+                    <div class="flex items-center space-x-4 mt-1">
+                      <p class="text-sm text-gray-600">
+                        <span class="inline-block w-4 h-4 mr-1">👤</span>
+                        <%= expense.user.full_name %>
+                      </p>
+                      <p class="text-sm text-gray-600">
+                        <span class="inline-block w-4 h-4 mr-1">📂</span>
+                        <%= expense.category %>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <!-- Amount -->
+                <div class="text-right">
+                  <span class="text-lg font-medium text-[#264653]">$<%= expense.amount %></span>
+                  <p class="text-xs text-gray-500"><%= expense.created_at.strftime("%b %d, %Y") %></p>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <!-- Empty State -->
+        <div class="text-center py-12">
+          <div class="text-[#006D77] mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-[#264653] mb-2">No expenses yet</h3>
+          <p class="text-gray-600 mb-6">Start tracking your trip expenses!</p>
+          <%= link_to new_trip_budget_expense_path(@trip), 
+              class: "inline-flex items-center space-x-2 px-4 py-2 bg-[#006D77] text-white rounded-lg hover:bg-[#264653] transition-colors duration-200" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
+            </svg>
+            <span>Add Your First Expense</span>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
   </div>
 </div>
+<%# Helper method for category icons - add to helper file %>
+<% def category_icon(category)
+  case category.downcase
+  when 'accommodation'
+    '🏨'
+  when 'transportation'
+    '✈️'
+  when 'food'
+    '🍽️'
+  when 'activities'
+    '🎯'
+  else
+    '💰'
+  end
+end %>
