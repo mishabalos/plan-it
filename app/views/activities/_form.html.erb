@@ -1,4 +1,4 @@
-<%= form_with(model: [@trip, @itinerary, @activity], local: true, class: "space-y-4") do |f| %>
+<%= form_with(model: [@trip, @itinerary, @activity], class: "space-y-4") do |f| %>
   <div class="field">
     <%= f.label :name, class: "text-sm font-medium" %>
     <%= f.text_field :name, class: "flex h-10 w-full rounded-md border" %>

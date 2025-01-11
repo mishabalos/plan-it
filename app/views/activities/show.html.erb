@@ -25,24 +25,13 @@
       </div>
       <% if @activity.latitude && @activity.longitude %>
         <div class="mt-4">
-          <div id="map" class="w-full h-64 rounded-lg"></div>
+          <div data-controller="map"
+               data-map-latitude-value="<%= @activity.latitude %>"
+               data-map-longitude-value="<%= @activity.longitude %>"
+               data-map-title-value="<%= @activity.name %>">
+            <div data-map-target="container" class="w-full h-64 rounded-lg"></div>
+          </div>
         </div>
-        <%= javascript_tag do %>
-          document.addEventListener('DOMContentLoaded', function() {
-          const map = new google.maps.Map(document.getElementById('map'), {
-          center: { 
-          lat: <%= @activity.latitude %>, 
-          lng: <%= @activity.longitude %>
-          },
-          zoom: 15
-          });
-          new google.maps.Marker({
-          position: { lat: <%= @activity.latitude %>, lng: <%= @activity.longitude %> },
-          map: map,
-          title: '<%= @activity.name %>'
-          });
-          });
-        <% end %>
       <% end %>
     <% end %>
     <div class="mt-4">

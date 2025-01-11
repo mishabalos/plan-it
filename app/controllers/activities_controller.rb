@@ -17,10 +17,20 @@ class ActivitiesController < ApplicationController
 
   def create
     @activity = @itinerary.activities.build(activity_params)
-    if @activity.save
-      redirect_to trip_itinerary_activity_path(@trip, @itinerary, @activity), notice: "Activity created."
-    else
-      render :new
+
+    respond_to do |format|
+      if @activity.save
+        format.turbo_stream {
+          redirect_to trip_itinerary_activity_path(@trip, @itinerary, @activity),
+          notice: "Activity created."
+        }
+        format.html {
+          redirect_to trip_itinerary_activity_path(@trip, @itinerary, @activity),
+          notice: "Activity created."
+        }
+      else
+        format.html { render :new }
+      end
     end
   end
 
