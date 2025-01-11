@@ -30,7 +30,10 @@
         <%= javascript_tag do %>
           document.addEventListener('DOMContentLoaded', function() {
           const map = new google.maps.Map(document.getElementById('map'), {
-          center: { lat: <%= @activity.latitude %>, lng: <%= @activity.longitude %> },
+          center: { 
+          lat: <%= @activity.latitude %>, 
+          lng: <%= @activity.longitude %>
+          },
           zoom: 15
           });
           new google.maps.Marker({
