@@ -1,0 +1,6 @@
+<p>added expense '<%= log.details['name'] %>' 
+  ($<%= log.details['amount'] %>) in <%= log.details['category'] %>
+  <% if log.details['split_with'].present? %>
+    split with <%= pluralize(log.details['split_with'].count, 'person') %>
+  <% end %>
+</p>

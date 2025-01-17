@@ -20,6 +20,12 @@ class ActivitiesController < ApplicationController
 
     respond_to do |format|
       if @activity.save
+        @trip.log_activity(current_user, 'added_activity', @activity, {
+       name: @activity.name,
+       itinerary_date: @itinerary.date,
+       start_time: @activity.start_time.strftime("%I:%M %p"),
+       end_time: @activity.end_time.strftime("%I:%M %p")
+     })
         format.turbo_stream {
           redirect_to trip_itinerary_activity_path(@trip, @itinerary, @activity),
           notice: "Activity created."
@@ -39,6 +45,11 @@ class ActivitiesController < ApplicationController
 
   def update
     if @activity.update(activity_params)
+      @trip.log_activity(current_user, 'updated_activity', @activity, {
+        name: @activity.name,
+        changed_fields: @activity.previous_changes.keys,
+        itinerary_date: @itinerary.date
+      })
       redirect_to trip_itinerary_activity_path(@trip, @itinerary, @activity), notice: "Activity updated."
     else
       render :edit
@@ -46,6 +57,10 @@ class ActivitiesController < ApplicationController
   end
 
   def destroy
+    @trip.log_activity(current_user, 'removed_activity', @activity, {
+      name: @activity.name,
+      itinerary_date: @itinerary.date
+    })
     @activity.destroy
     redirect_to trip_itinerary_activities_path(@trip, @itinerary), notice: "Activity deleted."
   end

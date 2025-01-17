@@ -18,6 +18,10 @@ class ItinerariesController < ApplicationController
   def create
     @itinerary = @trip.itineraries.build(itinerary_params)
     if @itinerary.save
+      @trip.log_activity(current_user, 'added_itinerary', @itinerary, {
+       date: @itinerary.date,
+       day_number: (@itinerary.date - @trip.start_date).to_i + 1
+     })
       redirect_to trip_itinerary_path(@trip, @itinerary), notice: "Itinerary created."
     else
       render :new
@@ -29,6 +33,11 @@ class ItinerariesController < ApplicationController
 
   def update
     if @itinerary.update(itinerary_params)
+      @trip.log_activity(current_user, 'updated_itinerary', @itinerary, {
+       changed_fields: @itinerary.previous_changes.keys,
+       old_date: @itinerary.date_was,
+       new_date: @itinerary.date
+     })
       redirect_to trip_itinerary_path(@trip, @itinerary), notice: "Itinerary updated."
     else
       render :edit
@@ -36,6 +45,10 @@ class ItinerariesController < ApplicationController
   end
 
   def destroy
+    @trip.log_activity(current_user, 'removed_itinerary', @itinerary, {
+     date: @itinerary.date,
+     activities_count: @itinerary.activities.count
+   })
     @itinerary.destroy
     redirect_to trip_itineraries_path(@trip), notice: "Itinerary deleted."
   end

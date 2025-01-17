@@ -1,41 +1,4 @@
 <div class="container mx-auto px-4 py-8">
-  <!-- Hero Section -->
-  <div class="text-center mb-12">
-    <h1 class="text-4xl font-bold text-[#264653] mb-4">Discover your next adventure</h1>
-    <p class="text-xl text-gray-600 mb-8">Plan and organize your dream trips with ease</p>
-    <!-- Search Bar -->
-    <div class="max-w-2xl mx-auto">
-      <div class="relative flex items-center bg-white rounded-lg shadow-lg p-2">
-        <input type="text" 
-               placeholder="Where to?" 
-               class="w-full px-4 py-2 rounded-lg text-gray-700 focus:outline-none">
-        <%= link_to 'Search', '#', 
-            class: 'px-6 py-2 bg-[#006D77] text-white rounded-lg hover:bg-[#264653] transition-colors duration-200' %>
-      </div>
-    </div>
-  </div>
-  <!-- Category Cards -->
-  <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
-    <% categories = [
-      { title: 'Hotels', count: '1,000+ stays', icon: '🏨' },
-      { title: 'Flights', count: '500+ routes', icon: '✈️' },
-      { title: 'Activities', count: '2,000+ activities', icon: '🎯' },
-      { title: 'Restaurants', count: '3,000+ places', icon: '🍽️' }
-    ] %>
-    <% categories.each do |category| %>
-      <div class="bg-white rounded-xl p-4 shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer group">
-        <div class="flex items-center space-x-3">
-          <span class="text-2xl"><%= category[:icon] %></span>
-          <div>
-            <h3 class="font-semibold text-[#264653] group-hover:text-[#006D77] transition-colors duration-200">
-              <%= category[:title] %>
-            </h3>
-            <p class="text-sm text-gray-500"><%= category[:count] %></p>
-          </div>
-        </div>
-      </div>
-    <% end %>
-  </div>
   <!-- My Trips Section -->
   <div class="mb-12">
     <div class="flex justify-between items-center mb-6">

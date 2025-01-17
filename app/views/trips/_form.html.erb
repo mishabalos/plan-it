@@ -24,5 +24,7 @@
     <%= f.hidden_field :latitude %>
     <%= f.hidden_field :longitude %>
   </div>
-  <%= f.submit class: "w-full btn-primary" %>
+  <%= f.button type: "submit", class: "px-4 py-2 bg-[#006D77] text-white rounded-lg hover:bg-[#264653] transition-colors duration-200 flex items-center justify-center gap-1 w-full cursor-pointer" do %>
+    Create Trip
+  <% end %>
 <% end %>

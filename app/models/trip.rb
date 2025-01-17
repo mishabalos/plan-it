@@ -1,10 +1,11 @@
 class Trip < ApplicationRecord
   belongs_to :user
-  has_many :destinations
-  has_many :itineraries
+  has_many :destinations, dependent: :destroy 
+  has_many :itineraries, dependent: :destroy
   has_many :trip_collaborators, dependent: :destroy
   has_many :collaborators, through: :trip_collaborators, source: :user
-  has_one :budget, class_name: "Finance::Budget"
+  has_many :activity_logs, dependent: :destroy
+  has_one :budget, class_name: "Finance::Budget", dependent: :destroy
 
   validates :title, presence: true
   validates :start_date, presence: true
@@ -27,6 +28,15 @@ class Trip < ApplicationRecord
 
   def can_edit?(user)
     owner?(user) || trip_collaborators.exists?(user: user, role: "editor")
+  end
+
+  def log_activity(user, action, target = nil, details = {})
+    activity_logs.create!(
+      user: user,
+      action: action,
+      target: target,
+      details: details
+    )
   end
 
   private

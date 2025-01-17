@@ -1,5 +1,5 @@
 <div class="space-y-2 text-center">
-  <h2 class="text-2xl font-bold">Sign up for PlanIt</h2>
+  <h2 class="text-2xl font-bold text-[#006D77]">Sign up for PlanIt</h2>
   <p class="text-sm text-gray-500">
     Register for a PlanIt account with your email and password.
   </p>
@@ -32,7 +32,7 @@
     <%= f.password_field :password_confirmation, autocomplete: "new-password", placeholder: "password", required: true, class: "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" %>
   </div>
   <div class="actions">
-    <%= f.submit "Sign up", class: "inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-black text-white hover:bg-black/90 h-10 px-4 py-2 w-full" %>
+    <%= f.submit "Sign up", class: "inline-flex items-center justify-center rounded-md text-sm font-medium bg-[#006D77] text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:bg-[#264653] transform hover:-translate-y-0.5 transition-all duration-300 hover:shadow-xl h-10 px-4 py-2 w-full cursor-pointer" %>
   </div>
 <% end %>
 <%= render "devise/shared/links" %>

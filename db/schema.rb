@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_01_08_120805) do
+ActiveRecord::Schema[7.2].define(version: 2025_01_17_074301) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -27,6 +27,19 @@ ActiveRecord::Schema[7.2].define(version: 2025_01_08_120805) do
     t.string "location_name"
     t.string "formatted_address"
     t.index ["itinerary_id"], name: "index_activities_on_itinerary_id"
+  end
+
+  create_table "activity_logs", force: :cascade do |t|
+    t.bigint "trip_id", null: false
+    t.bigint "user_id", null: false
+    t.string "action"
+    t.string "target_type"
+    t.integer "target_id"
+    t.jsonb "details"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["trip_id"], name: "index_activity_logs_on_trip_id"
+    t.index ["user_id"], name: "index_activity_logs_on_user_id"
   end
 
   create_table "budgets", force: :cascade do |t|
@@ -117,6 +130,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_01_08_120805) do
   end
 
   add_foreign_key "activities", "itineraries"
+  add_foreign_key "activity_logs", "trips"
+  add_foreign_key "activity_logs", "users"
   add_foreign_key "budgets", "trips"
   add_foreign_key "destinations", "trips"
   add_foreign_key "expense_splits", "expenses"

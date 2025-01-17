@@ -14,8 +14,13 @@ class TripCollaboratorsController < ApplicationController
   def create
     @user = User.find_by(email: params[:email])
     if @user
-      @trip_collaborator = @trip.trip_collaborators.build(user: @user, role: "viewer")
+      @trip_collaborator = @trip.trip_collaborators.build(user: @user, role: params[:role])
       if @trip_collaborator.save
+        @trip.log_activity(current_user, 'added_collaborator', @trip_collaborator, {
+          collaborator_name: @user.full_name,
+          collaborator_email: @user.email,
+          role: @trip_collaborator.role
+        })
         redirect_to trip_collaborators_path(@trip), notice: "Collaborator added"
       else
         render :new
@@ -28,6 +33,11 @@ class TripCollaboratorsController < ApplicationController
   def update
     @trip_collaborator = @trip.trip_collaborators.find(params[:id])
     if @trip_collaborator.update(role: params[:role])
+      @trip.log_activity(current_user, 'updated_collaborator_role', @trip_collaborator, {
+        collaborator_name: @trip_collaborator.user.full_name,
+        old_role: @trip_collaborator.role_was,
+        new_role: @trip_collaborator.role
+      })
       redirect_to trip_collaborators_path(@trip), notice: "Role updated"
     else
       redirect_to trip_collaborators_path(@trip), alert: "Update failed"
@@ -36,6 +46,10 @@ class TripCollaboratorsController < ApplicationController
 
   def destroy
     @trip_collaborator = @trip.trip_collaborators.find(params[:id])
+    @trip.log_activity(current_user, 'removed_collaborator', nil, {
+      collaborator_name: @trip_collaborator.user.full_name,
+      collaborator_email: @trip_collaborator.user.email
+    })
     @trip_collaborator.destroy
     redirect_to trip_collaborators_path(@trip), notice: "Collaborator removed"
   end

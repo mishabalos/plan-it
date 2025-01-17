@@ -77,39 +77,24 @@
           <label class="block text-sm font-medium text-[#264653] mb-2">Split with</label>
           <div class="relative">
             <%= select_tag 'split_with[]', 
-                options_from_collection_for_select(@trip.collaborators, 'id', 'full_name'),
-                { multiple: true, 
-                  class: "w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-[#006D77] focus:ring focus:ring-[#006D77]/20 focus:outline-none transition-colors duration-200",
-                  size: 4 } %>
+        options_from_collection_for_select(
+          User.where(id: @trip.user_id).or(User.where(id: @trip.collaborators.pluck(:id))).where.not(id: current_user.id),
+          'id', 
+          'full_name'
+        ),
+        { multiple: true, 
+          class: "w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-[#006D77] focus:ring focus:ring-[#006D77]/20 focus:outline-none transition-colors duration-200",
+          size: 4 } %>
           </div>
           <p class="mt-2 text-sm text-gray-500">Hold Ctrl/Cmd to select multiple people</p>
         </div>
-      </div>
-      <!-- Action Buttons -->
-      <div class="flex items-center justify-end space-x-4">
-        <%= link_to 'Cancel', trip_budget_expenses_path(@trip, @budget), 
+        <!-- Action Buttons -->
+        <div class="flex items-center justify-end space-x-4">
+          <%= link_to 'Cancel', trip_budget_expenses_path(@trip, @budget), 
             class: "px-6 py-2 border-2 border-[#006D77] text-[#006D77] rounded-lg hover:bg-[#006D77] hover:text-white transition-colors duration-200" %>
-        <%= f.submit "Create Expense", 
+          <%= f.submit "Create Expense", 
             class: "px-6 py-2 bg-[#006D77] text-white rounded-lg hover:bg-[#264653] transition-colors duration-200 cursor-pointer" %>
-      </div>
-    <% end %>
-    <!-- Tips Section -->
-    <div class="mt-8 bg-[#E29578]/10 rounded-lg p-4">
-      <h3 class="text-sm font-medium text-[#264653] mb-2">Quick Tips:</h3>
-      <ul class="text-sm text-gray-600 space-y-2">
-        <li class="flex items-center space-x-2">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-[#E29578]" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-          </svg>
-          <span>Choose a clear name for easier tracking</span>
-        </li>
-        <li class="flex items-center space-x-2">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-[#E29578]" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-          </svg>
-          <span>Select all collaborators to split evenly</span>
-        </li>
-      </ul>
+        </div>
+      <% end %>
     </div>
   </div>
-</div>

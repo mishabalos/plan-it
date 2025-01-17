@@ -1,0 +1,8 @@
+<p>updated trip 
+  <% if log.details['changed_fields'].present? %>
+    <% fields = log.details['changed_fields'] - ['updated_at'] %>
+    <% if fields.any? %>
+      <%= fields.to_sentence %>
+    <% end %>
+  <% end %>
+</p>

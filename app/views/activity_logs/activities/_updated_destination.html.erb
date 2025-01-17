@@ -1,0 +1,5 @@
+<p>updated destination details for <%= log.target.name %>
+  <% if log.details['changed_fields'].present? %>
+    (<%= log.details['changed_fields'].to_sentence %>)
+  <% end %>
+</p>

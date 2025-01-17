@@ -9,6 +9,9 @@ class Finance::BudgetsController < ApplicationController
   def create
     @budget = @trip.build_budget(budget_params)
     if @budget.save
+      @trip.log_activity(current_user, 'set_budget', @budget, {
+        amount: @budget.amount
+      })
       redirect_to trip_path(@trip), notice: "Budget created."
     else
       render :new
@@ -20,6 +23,10 @@ class Finance::BudgetsController < ApplicationController
 
   def update
     if @budget.update(budget_params)
+      @trip.log_activity(current_user, 'updated_budget', @budget, {
+         old_amount: @budget.amount_was,
+         new_amount: @budget.amount
+       })
       redirect_to trip_path(@trip), notice: "Budget updated."
     else
       render :edit

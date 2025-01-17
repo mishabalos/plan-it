@@ -16,6 +16,8 @@ class Finance::ExpensesController < ApplicationController
   end
 
   def edit
+    @expense = Finance::Expense.find(params[:id])
+    @trip = Trip.find(params[:trip_id])  # Add this line if not already present
   end
 
   def create
@@ -23,6 +25,14 @@ class Finance::ExpensesController < ApplicationController
     @expense.user = current_user
 
     if @expense.save
+      @trip.log_activity(current_user, 'added_expense', @expense, {
+         name: @expense.name,
+         amount: @expense.amount,
+         category: @expense.category,
+         split_with: @expense.expense_splits.map { |split| 
+           { user: split.user.full_name, amount: split.amount }
+         }
+       })
       create_splits if params[:split_with].present?
       redirect_to trip_budget_expenses_path(@trip), notice: "Expense added."
     else
@@ -41,6 +51,10 @@ class Finance::ExpensesController < ApplicationController
   end
 
   def destroy
+    @trip.log_activity(current_user, 'removed_expense', @expense, {
+      name: @expense.name,
+      amount: @expense.amount
+    })
     @expense.destroy
     redirect_to trip_budget_expenses_path(@trip), notice: "Expense deleted."
   end

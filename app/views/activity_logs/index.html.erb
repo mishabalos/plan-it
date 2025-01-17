@@ -1,0 +1,32 @@
+<div class="container mx-auto px-4 max-w-3xl">
+  <h1 class="text-2xl font-bold mb-6">Activity Feed</h1>
+  <div class="space-y-4">
+    <% @activity_logs.each do |log| %>
+      <div class="bg-white rounded-lg shadow p-4">
+        <div class="flex items-start">
+          <div class="flex-grow">
+            <div class="flex items-center">
+              <span class="font-medium"><%= log.user.full_name %></span>
+              <span class="text-gray-500 text-sm ml-2">
+                <%= time_ago_in_words(log.created_at) %> ago
+              </span>
+            </div>
+            <div class="mt-1">
+              <%= render "activity_logs/activities/#{log.action}", log: log %>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  <% if @activity_logs.empty? %>
+    <div class="col-span-3 text-center py-12 bg-white rounded-xl shadow-md">
+      <div class="text-[#006D77] mb-4">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+      </div>
+      <h3 class="text-xl font-semibold text-[#264653] mb-2">No activity yet</h3>
+    </div>
+  <% end %>
+</div>

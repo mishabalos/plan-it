@@ -10,6 +10,7 @@ class TripsController < ApplicationController
   end
 
   def show
+    @trip = Trip.find(params[:id])
   end
 
   def new
@@ -19,6 +20,7 @@ class TripsController < ApplicationController
   def create
     @trip = current_user.trips.build(trip_params)
     if @trip.save
+      @trip.log_activity(current_user, 'created_trip')
       redirect_to @trip, notice: "Trip created."
     else
       render :new
@@ -30,6 +32,9 @@ class TripsController < ApplicationController
 
   def update
     if @trip.update(trip_params)
+      @trip.log_activity(current_user, 'updated_trip', nil, { 
+        changed_fields: @trip.previous_changes.keys
+      })
       redirect_to @trip, notice: "Trip updated."
     else
       render :edit
@@ -37,8 +42,9 @@ class TripsController < ApplicationController
   end
 
   def destroy
+    @trip.log_activity(current_user, 'deleted_trip')
     @trip.destroy
-    redirect_to trips_path, notice: "Trip deleted."
+    redirect_to trips_path, notice: "Trip was succesfully deleted."
   end
 
   private
