@@ -63,3 +63,4 @@ gem "devise", "~> 4.9"
 gem "rails_live_reload", "~> 0.4.0"
 
 gem "inline_svg"
+gem "ostruct"
